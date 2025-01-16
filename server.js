@@ -5,14 +5,18 @@ const csv = require('csv-parser'); // npm i csv-parser: To Parse CSV files.
 const supabase = require('./SupabaseClient'); //npm i @supabase/supabase-js: To access Supabase
 const multer = require('multer'); //npm i multer: To let user upload files.
 const path = require('path');
+const ditenv = require('dotenv').config(); // npm i dotenv
 
+
+// const SUPABASE_URL = process.env.SUPABASE_URL;
+// const SUPABASE_KEY = process.env.SUPABASE_KEY;
 
 //-------------------------------------------------------------------------------->>
 
 const app = express();
 app.use(cors());
 console.log('Hi,  express app is starting')
-
+console.log("ENV: ",process.env.SUPABASE_URL);
 // app.get('/|/index.html', (req, res)=> {
 app.get('^/$|/index(.html)?', (req, res) => {
     console.log('here')
