@@ -1,0 +1,120 @@
+
+C:\Users\Work>cd downloads
+
+C:\Users\Work\Downloads>ssh -i "React_ToDo_App_Key.pem" ubuntu@ec2-3-94-143-145.compute-1.amazonaws.com
+The authenticity of host 'ec2-3-94-143-145.compute-1.amazonaws.com (3.94.143.145)' can't be established.
+ED25519 key fingerprint is SHA256:5X+AVcUMwz2bVW7LmrxKwjmlYsRCp8dRR13R4ntKd18.
+This key is not known by any other names.
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+Warning: Permanently added 'ec2-3-94-143-145.compute-1.amazonaws.com' (ED25519) to the list of known hosts.
+Welcome to Ubuntu 24.04.1 LTS (GNU/Linux 6.8.0-1021-aws x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/pro
+
+ System information as of Thu Jan 16 13:24:56 UTC 2025
+
+  System load:  0.0               Processes:             106
+  Usage of /:   24.9% of 6.71GB   Users logged in:       0
+  Memory usage: 21%               IPv4 address for enX0: 172.31.24.14
+  Swap usage:   0%
+
+Expanded Security Maintenance for Applications is not enabled.
+
+0 updates can be applied immediately.
+
+Enable ESM Apps to receive additional future security updates.
+See https://ubuntu.com/esm or run: sudo pro status
+
+
+
+The programs included with the Ubuntu system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+
+Ubuntu comes with ABSOLUTELY NO WARRANTY, to the extent permitted by
+applicable law.
+
+To run a command as administrator (user "root"), use "sudo <command>".
+See "man sudo_root" for details.
+
+
+
+
+
+
+
+ubuntu@ip-172-31-24-14:~$ git clone https://github.com/FarhadAbbasi/My_Express_Server.git
+Cloning into 'My_Express_Server'...
+remote: Enumerating objects: 1627, done.
+remote: Counting objects: 100% (1627/1627), done.
+remote: Compressing objects: 100% (1238/1238), done.
+remote: Total 1627 (delta 296), reused 1625 (delta 294), pack-reused 0 (from 0)
+Receiving objects: 100% (1627/1627), 1.86 MiB | 19.81 MiB/s, done.
+Resolving deltas: 100% (296/296), done.
+ubuntu@ip-172-31-24-14:~$ ls
+My_Express_Server
+ubuntu@ip-172-31-24-14:~$ cd My-Express_Server
+-bash: cd: My-Express_Server: No such file or directory
+ubuntu@ip-172-31-24-14:~$ cd My_Express_Server
+ubuntu@ip-172-31-24-14:~/My_Express_Server$ ls
+NewPage.html       app.js   demoserver.js  movies.csv    package-lock.json  server.js
+SupabaseClient.js  data.js  index.html     node_modules  package.json       uploads
+ubuntu@ip-172-31-24-14:~/My_Express_Server$ npm i
+Command 'npm' not found, but can be installed with:
+sudo apt install npm
+ubuntu@ip-172-31-24-14:~/My_Express_Server$ sudo install npm
+install: missing destination file operand after 'npm'
+Try 'install --help' for more information.
+ubuntu@ip-172-31-24-14:~/My_Express_Server$ sudo apt install npm
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+E: Unable to locate package npm
+ubuntu@ip-172-31-24-14:~/My_Express_Server$ sudo apt-get update
+
+
+
+
+
+
+ubuntu@ip-172-31-24-14:~/My_Express_Server$ sudo apt install npm
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+The following additional packages will be installed:
+
+
+
+
+
+
+No VM guests are running outdated hypervisor (qemu) binaries on this host.
+ubuntu@ip-172-31-24-14:~/My_Express_Server$ df -h
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/root       6.8G  2.7G  4.1G  40% /
+tmpfs           479M     0  479M   0% /dev/shm
+tmpfs           192M  888K  191M   1% /run
+tmpfs           5.0M     0  5.0M   0% /run/lock
+/dev/xvda16     881M   76M  744M  10% /boot
+/dev/xvda15     105M  6.1M   99M   6% /boot/efi
+tmpfs            96M   12K   96M   1% /run/user/1000
+ubuntu@ip-172-31-24-14:~/My_Express_Server$ npm i
+
+up to date, audited 107 packages in 681ms
+
+16 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+ubuntu@ip-172-31-24-14:~/My_Express_Server$ npm start
+
+> expressserver@1.0.0 start
+> node server.js
+
+Hi,  express app is starting
+ENV:  'https://qtpcpnopgqtdajuwynpi.supabase.co' ;
+Server is running on port 3000
+here
+here

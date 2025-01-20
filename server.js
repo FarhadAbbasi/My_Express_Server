@@ -5,7 +5,7 @@ const csv = require('csv-parser'); // npm i csv-parser: To Parse CSV files.
 const supabase = require('./SupabaseClient'); //npm i @supabase/supabase-js: To access Supabase
 const multer = require('multer'); //npm i multer: To let user upload files.
 const path = require('path');
-const ditenv = require('dotenv').config(); // npm i dotenv
+const dotenv = require('dotenv').config(); // npm i dotenv
 
 
 // const SUPABASE_URL = process.env.SUPABASE_URL;
@@ -14,9 +14,16 @@ const ditenv = require('dotenv').config(); // npm i dotenv
 //-------------------------------------------------------------------------------->>
 
 const app = express();
-app.use(cors());
-console.log('Hi,  express app is starting')
+app.use(cors( 
+    // {
+    //     origin: 'https://your-amplify-app-url.com', // replace with your Amplify app URL
+    //     methods: ['GET', 'POST'],
+    //   }
+));
+
+console.log('Hi, Express Server is starting')
 console.log("ENV: ",process.env.SUPABASE_URL);
+
 // app.get('/|/index.html', (req, res)=> {
 app.get('^/$|/index(.html)?', (req, res) => {
     console.log('here')
@@ -226,7 +233,7 @@ app.post('/upload/supabase/movies', upload.single('file'), (req, res) => {  // C
 
 
 
-//----------------------  Send CSV Movies Data to SupaBase STARTS  --------------------------->>
+//----------------------  Send CSV Tasks Data to SupaBase STARTS  --------------------------->>
 
 
 app.post('/upload/supabase/tasks', upload.single('file'), (req, res) => {  // CSV Upload Call
@@ -245,6 +252,8 @@ app.post('/upload/supabase/tasks', upload.single('file'), (req, res) => {  // CS
             name: row.name,
             description: row.description,
             date: row.date,
+            priority: row.priority,
+            status: row.status
         }));
     }
 
@@ -264,11 +273,11 @@ app.post('/upload/supabase/tasks', upload.single('file'), (req, res) => {  // CS
             //-----  CSV Data Uploading to SupaBase  --->>
             try {
                 for (const row of mappedData) {
-                    const { name, description, date } = row;
+                    const { name, description, date, priority, status } = row;
 
                     const { data, error } = await supabase
                         .from('Tasks')
-                        .insert([{ name, description, date }])
+                        .insert([{ name, description, date, priority, status }])
                         .select()
 
                     // if (data) { res.json('Added Task:', data) }
@@ -292,7 +301,7 @@ app.post('/upload/supabase/tasks', upload.single('file'), (req, res) => {  // CS
         }))
 });
 
-//----------------------  Send CSV Movies Data to SupaBase ENDS --------------------------->>
+//----------------------  Send CSV Tasks Data to SupaBase ENDS --------------------------->>
 
 
 
@@ -357,7 +366,7 @@ app.get('/*', (req, res) => {
     res.status(404).sendFile('index.html', { root: __dirname })
 })
 
-var server = app.listen(3000, () => {
+var server = app.listen(3000, '0.0.0.0', () => {
     console.log('Server is running on port 3000')
 })
 
