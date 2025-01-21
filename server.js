@@ -9,8 +9,16 @@ const dotenv = require('dotenv').config(); // npm i dotenv (to access env variab
 const bodyParser = require('body-parser'); // npm install body-parser (for processing direct data/JSON, {from git webhooks etc})
 const { exec } = require('child_process'); 
 
+
 // const SUPABASE_URL = process.env.SUPABASE_URL;
 // const SUPABASE_KEY = process.env.SUPABASE_KEY;
+
+const https = require('https');
+const options = {
+    key: fs.readFileSync('/etc/ssl/private/server.key'),
+    cert: fs.readFileSync('/etc/ssl/certs/server.crt')
+};
+
 
 //-------------------------------------------------------------------------------->>
 
@@ -402,4 +410,8 @@ var server = app.listen(3000, '0.0.0.0', () => {
 
 
 //now run "npm start" or "npm run dev" (for nodemon)
+
+// https.createServer(options, app).listen(443, () => {
+//     console.log('Server is running on https://http://100.29.21.213');
+// });
 
