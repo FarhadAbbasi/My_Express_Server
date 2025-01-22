@@ -405,7 +405,7 @@ app.get('/*', (req, res) => {
 
 
 var server = app.listen(3000, '0.0.0.0', () => {
-    console.log('Server is running on port 3000')
+    console.log( 'Express Server is running on port 3000')
 })
 
 
