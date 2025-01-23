@@ -7,7 +7,7 @@ const multer = require('multer'); //npm i multer: To let user upload files.
 const path = require('path'); //(To manage/concatenate paths)
 const dotenv = require('dotenv').config(); // npm i dotenv (to access env variables)
 const bodyParser = require('body-parser'); // npm install body-parser (for processing direct data/JSON, {from git webhooks etc})
-const { exec } = require('child_process'); 
+const { exec } = require('child_process');
 
 
 // const SUPABASE_URL = process.env.SUPABASE_URL;
@@ -15,15 +15,18 @@ const { exec } = require('child_process');
 
 const https = require('https');
 const options = {
-    key: fs.readFileSync('/etc/ssl/private/server.key'),
-    cert: fs.readFileSync('/etc/ssl/certs/server.crt')
+    key: fs.readFileSync('/etc/letsencrypt/live/proxpire.com/privkey.pem'),
+    cert: fs.readFileSync('/etc/letsencrypt/live/proxpire.com/fullchain.pem'),
+
+    // key: fs.readFileSync('/etc/ssl/private/server.key'),
+    // cert: fs.readFileSync('/etc/ssl/certs/server.crt')
 };
 
 
 //-------------------------------------------------------------------------------->>
 
 const app = express();
-app.use(cors( 
+app.use(cors(
     // {
     //     origin: 'https://your-amplify-app-url.com', // replace with your Amplify app URL
     //     methods: ['GET', 'POST'],
@@ -32,7 +35,7 @@ app.use(cors(
 app.use(bodyParser.json());
 
 console.log('Hi, Express Server is starting')
-console.log("ENV: ",process.env.SUPABASE_URL);
+console.log("ENV: ", process.env.SUPABASE_URL);
 
 // app.get('/|/index.html', (req, res)=> {
 app.get('^/$|/index(.html)?', (req, res) => {
@@ -277,7 +280,7 @@ app.post('/upload/supabase/tasks', upload.single('file'), (req, res) => {  // CS
         .on('end', async () => {
             const mappedData = mapData(results);
 
-            console.log(mappedData) ;
+            console.log(mappedData);
 
 
             //-----  CSV Data Uploading to SupaBase  --->>
@@ -404,14 +407,16 @@ app.get('/*', (req, res) => {
 
 
 
-var server = app.listen(3000, '0.0.0.0', () => {
-    console.log( 'Express Server is running on port 3000')
-})
+// var server = app.listen(3000, '0.0.0.0', () => {
+//     console.log('Express Server is running on port 3000');
+// });
 
 
 //now run "npm start" or "npm run dev" (for nodemon)
 
 // https.createServer(options, app).listen(443, () => {
-//     console.log('Server is running on https://http://100.29.21.213');
-// });
+
+    https.createServer(options, app).listen(3000, () => {
+    console.log('Secure Server is running on Port 3000 >>  https://http://100.29.21.213');
+});
 
