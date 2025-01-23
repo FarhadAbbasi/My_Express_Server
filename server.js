@@ -15,13 +15,13 @@ const http = require('http');
 // const SUPABASE_URL = process.env.SUPABASE_URL;
 // const SUPABASE_KEY = process.env.SUPABASE_KEY;
 
-const options = {
-    key: fs.readFileSync('/etc/letsencrypt/live/proxpire.com/privkey.pem'),
-    cert: fs.readFileSync('/etc/letsencrypt/live/proxpire.com/fullchain.pem'),
+// const options = {
+//     key: fs.readFileSync('/etc/letsencrypt/live/proxpire.com/privkey.pem'),
+//     cert: fs.readFileSync('/etc/letsencrypt/live/proxpire.com/fullchain.pem'),
+// };
 
     // key: fs.readFileSync('/etc/ssl/private/server.key'),
     // cert: fs.readFileSync('/etc/ssl/certs/server.crt')
-};
 
 
 //-------------------------------------------------------------------------------->>
