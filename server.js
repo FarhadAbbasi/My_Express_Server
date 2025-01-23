@@ -8,12 +8,13 @@ const path = require('path'); //(To manage/concatenate paths)
 const dotenv = require('dotenv').config(); // npm i dotenv (to access env variables)
 const bodyParser = require('body-parser'); // npm install body-parser (for processing direct data/JSON, {from git webhooks etc})
 const { exec } = require('child_process');
+const https = require('https');
+const http = require('http');
 
 
 // const SUPABASE_URL = process.env.SUPABASE_URL;
 // const SUPABASE_KEY = process.env.SUPABASE_KEY;
 
-const https = require('https');
 const options = {
     key: fs.readFileSync('/etc/letsencrypt/live/proxpire.com/privkey.pem'),
     cert: fs.readFileSync('/etc/letsencrypt/live/proxpire.com/fullchain.pem'),
@@ -414,9 +415,13 @@ app.get('/*', (req, res) => {
 
 //now run "npm start" or "npm run dev" (for nodemon)
 
-// https.createServer(options, app).listen(443, () => {
-    
-https.createServer(options, app).listen(3000, () => {
-    console.log('Secure Server is running on Port 3000 >>  https://http://100.29.21.213');
+
+http.createServer(app).listen(3000, () => {
+    console.log('HTTP Server running on port 3000');
 });
+
+// https.createServer(options, app).listen(443, () => {
+// https.createServer(options, app).listen(3000, () => {
+//     console.log('Secure Server is running on Port 3000 >>  https://http://100.29.21.213');
+// });
 
