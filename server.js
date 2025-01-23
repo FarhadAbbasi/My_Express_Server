@@ -415,8 +415,8 @@ app.get('/*', (req, res) => {
 //now run "npm start" or "npm run dev" (for nodemon)
 
 // https.createServer(options, app).listen(443, () => {
-
-    https.createServer(options, app).listen(3000, () => {
+    
+https.createServer(options, app).listen(3000, () => {
     console.log('Secure Server is running on Port 3000 >>  https://http://100.29.21.213');
 });
 
