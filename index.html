@@ -23,20 +23,6 @@
 
         <p>
             <li>
-                const https = require('https');
-                const options = {
-                key: fs.readFileSync('/etc/letsencrypt/live/proxpire.com/privkey.pem'),
-                cert: fs.readFileSync('/etc/letsencrypt/live/proxpire.com/fullchain.pem'),
-                }
-            </li> <br />
-
-            <li>
-                // https.createServer(options, app).listen(3000, () => {
-                console.log('Secure Server is running on Port 3000 >> https://http://100.29.21.213');
-                });
-            </li> <br />
-
-            <li>
                 http.createServer(app).listen(3000, () => {
                 console.log('HTTP Server is running on Port 3000 >> https://http://100.29.21.213');
                 });
