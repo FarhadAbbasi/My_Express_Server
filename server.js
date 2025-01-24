@@ -27,7 +27,6 @@ app.use(cors(
 app.use(bodyParser.json());
 
 console.log('Hi, Express Server is starting')
-// console.log("ENV: ", process.env.SUPABASE_URL);
 
 // app.get('/|/index.html', (req, res)=> {
 app.get('^/$|/index(.html)?', (req, res) => {
