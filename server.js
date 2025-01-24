@@ -376,9 +376,9 @@ app.get('/data(.js)?', (req, res) => {
 
 
 //Default route
-app.get('/*', (req, res) => {
-    res.status(404).sendFile('index.html', { root: __dirname })
-})
+//app.get('/*', (req, res) => {
+//    res.status(404).sendFile('index.html', { root: __dirname })
+//})
 
 //----------------------  GitHub WebHook Starts  --------------------------->>
 // This Hook ensures that github changes are pulled into code/server when changes are pulled on github and github webhook workflow sends the webhook to EC2 Server.

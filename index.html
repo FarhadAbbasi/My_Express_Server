@@ -1,5 +1,19 @@
 <!DOCTYPE html>
 
+<html>
+
+<head>
+    <title> Express Server </title>
+    <!-- <link rel="stylesheet" type="text/css" href="index.css"> -->
+
+    <!----- Google Fonts Link  ---->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link  href="https://fonts.googleapis.com/css2?family=Playwrite+GB+S:ital,wght@0,100..400;1,100..400&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
+</head>
+
+
 <body>
     <div style="background-color: aquamarine; padding: 20px; border-radius: 10px;">
         <h1> Hello HTML</h1>
@@ -17,18 +31,16 @@
             </li> <br />
 
             <li>
-                https.createServer(options, app).listen(3000, () => {
+                // https.createServer(options, app).listen(3000, () => {
                 console.log('Secure Server is running on Port 3000 >> https://http://100.29.21.213');
                 });
             </li> <br />
 
-            Also This HTTP request.
-
             <li>
-                https.createServer(options, app).listen(3000, () => {
-                console.log('Secure Server is running on Port 3000 >> https://http://100.29.21.213');
+                http.createServer(app).listen(3000, () => {
+                console.log('HTTP Server is running on Port 3000 >> https://http://100.29.21.213');
                 });
-            </li>  <br />
+            </li> <br />
 
 
         </p>
@@ -39,3 +51,6 @@
         </form>
     </div>
 </body>
+
+
+</html>
