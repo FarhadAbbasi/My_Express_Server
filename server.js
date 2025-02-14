@@ -1,4 +1,5 @@
 const express = require('express');
+const axios = require('axios');  // npm install axios:  For Fetching APIs
 const cors = require('cors'); //npm install cors: To aquire permissions to access APIs i.e Supabase etc.
 const fs = require('fs'); //npm install fs: To Read CSV file.
 const csv = require('csv-parser'); // npm i csv-parser: To Parse CSV files.
@@ -9,30 +10,182 @@ const dotenv = require('dotenv').config(); // npm i dotenv (to access env variab
 const bodyParser = require('body-parser'); // npm install body-parser (for processing direct data/JSON, {from git webhooks etc})
 const { exec } = require('child_process');
 const http = require('http');
+const OpenAi = require('openai');
 
 
-// const SUPABASE_URL = process.env.SUPABASE_URL;
-// const SUPABASE_KEY = process.env.SUPABASE_KEY;
 
 
-//-------------------------------------------------------------------------------->>
+//---------------------------  Library Initializations   ---------------------------------->>
 
 const app = express();
-app.use(cors(
-    // {
-    //     origin: 'https://your-amplify-app-url.com', // replace with your Amplify app URL
-    //     methods: ['GET', 'POST'],
-    //   }
-));
+const port = 3000;
+app.use(cors());
+app.use(express.json());
 app.use(bodyParser.json());
+const openaiKey = process.env.OPENAI_API_KEY;
+// const openai = new OpenAi({ apikey: openaiKey })
+// console.log('OPENAI key =', openaiKey);
 
 console.log('Hi, Express Server is starting')
 
-// app.get('/|/index.html', (req, res)=> {
+
+
+//----------------------  DEFAULT INDEX PAGE   --------------------------->>
 app.get('^/$|/index(.html)?', (req, res) => {
-    console.log('index call here')
     res.sendFile('./index.html', { root: __dirname })
+    console.log('index call here')
 })
+
+
+//----------------------  CHAT-GPT API Call for Single Message Chat  --------------------------->>
+
+app.post('/api/gptchat/message', async (req, res) => {
+    const { message } = req.body;     // Single Message
+    console.log('Received Message: ', message);
+
+    try {
+        const response = await axios.post(
+            'https://api.openai.com/v1/chat/completions',
+            {
+                model: 'gpt-4o-mini',
+                messages: [{ role: "user", content: message }],  // Single Message
+                max_tokens: 150,
+            },
+            {
+                headers: {
+                    'Authorization': `Bearer ${openaiKey}`,
+                    'Content-Type': 'application/json',
+                }
+            }
+        );
+        // console.log(" Message delivered is : ", response.data.choices[0].message.content);
+        // res.json({ reply: response.data.choices[0].message.content });
+
+
+        // For JSON Response. Convert JSON string to object.
+        let aiResponse = response.data.choices[0].message.content;
+        if (typeof aiResponse === "string") {
+            aiResponse = JSON.parse(aiResponse);
+        }
+        console.log(" ai persed response is : ", aiResponse);
+        res.json({ reply: aiResponse });
+
+    }
+
+    catch (error) {
+        console.error('Error from OpenAI:', error.response?.data || error.message);
+        console.error(error);
+        res.status(500).send('Error contacting GPT API');
+    }
+});
+
+
+//----------------------  CHAT-GPT API Call for Chat with History  --------------------------->>
+
+app.post('/api/gptchat/history', async (req, res) => {
+    const { messages } = req.body;  // Chat History
+    // console.log('Received Chat history: ', messages);
+
+
+    //-----------  GPT (direct API Link) Code  ------------->>
+    try {
+        const response = await axios.post(
+            'https://api.openai.com/v1/chat/completions',
+            {
+                model: 'gpt-4o-mini',
+                messages:
+                    messages.map((msg) => ({
+                        role: msg.role === 'user' ? 'user' : 'assistant',
+                        content: msg.content || ''
+                    })),
+
+                max_tokens: 150,
+            },
+            {
+                headers: {
+                    'Authorization': `Bearer ${openaiKey}`,
+                    'Content-Type': 'application/json',
+                }
+            }
+        );
+
+        res.json({ reply: response.data.choices[0].message.content });
+        console.log(" Message delivered");
+    }
+
+    catch (error) {
+        console.error('Error from OpenAI:', error.response?.data || error.message);
+        // console.error(error);
+        res.status(500).send('Error contacting GPT API');
+    }
+});
+
+
+//----------------------  Add Coins data to Supabase   --------------------------->>
+app.post('/api/supabase/coin/add', async (req, res) => {
+    const coindata = req.body;
+    console.log('Insert coin data is :', coindata);
+
+    const { Coin_Name,
+        Coin_Symbol,
+        Total_Mining,
+        Avg_Mining_PD,
+        Avg_Mining_PD_LY,
+        Total_Energy_Cons,
+        Avg_Energy_Cons_PD,
+        Avg_Energy_Cons_PD_LY
+    } = coindata;
+
+    const { data, error } = await supabase
+        .from('CoinsEnergyTable')
+        .insert(
+            [
+                {
+                    Coin_Name,
+                    Coin_Symbol,
+                    Total_Mining,
+                    Avg_Mining_PD,
+                    Avg_Mining_PD_LY,
+                    Total_Energy_Cons,
+                    Avg_Energy_Cons_PD,
+                    Avg_Energy_Cons_PD_LY
+                }
+            ]
+        )
+        .select()
+
+    if (data) {
+        res.json( data) ;
+    }
+
+    if (error) {
+        console.log('Error adding record : ', error );
+        return res.status(500).json({ err: 'Error Adding record', detail: error })
+    }
+
+})
+//----------------------  Add Coins Data Ends  --------------------------->>
+
+//----------------------  Fetch (and map) Supabase Tasks Data  --------------------------->>
+app.get('/supabase/coin/fetch', (req, res) => {
+
+    const FetchSupabaseData = async () => {
+        const { data, error } = await supabase
+            .from('CoinsEnergyTable')
+            .select('*')
+
+        if (data) {
+            res.json(data)
+            console.log('Supa Coins Energy data provided to app successfully');
+        }
+        if (error) {
+            console.log('Error fetching supa coins data:', error)
+        }
+    }
+
+    FetchSupabaseData();
+})
+//----------------------()  Fetch Supabase Tasks Data Ends () --------------------------->>
 
 
 
@@ -54,6 +207,7 @@ app.get('/supabase/movies', (req, res) => {
 
     FetchSupabaseData();
 })
+
 //----------------------()  Fetch Supabase Movies Data Ends ()--------------------------->>
 
 
@@ -70,6 +224,7 @@ app.get('/supabase/tasks', (req, res) => {
 
         if (data) {
             res.json(data)
+            console.log('Supa tasks data provided to app successfully');
         }
         if (error) {
             console.log('Error fetching supa data:', error)
@@ -337,7 +492,7 @@ app.delete('/api/delete/:id', async (req, res) => {
 
 
 
-//----------------------  Add Supabase Data  --------------------------->>
+//----------------------  Add Supabase Tasks Data  --------------------------->>
 app.post('/api/add', async (req, res) => {
     const { name, description, date } = req.body;
 
@@ -402,7 +557,7 @@ app.get('/data(.js)?', (req, res) => {
 //now run "npm start" or "npm run dev" (for nodemon)
 
 
-http.createServer(app).listen(3000, () => {
+http.createServer(app).listen(port, () => {
     console.log('HTTP Server running on port 3000');
 });
 
